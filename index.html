@@ -3,7 +3,7 @@
 <head>
 	<meta charset=utf-8>
 	<title>Burrito Order</title>
-	<<script src="burrito-order.js" charset="utf-8"></script>
+	<script src="burrito-order.js" charset="utf-8"></script>
 </head>
 <body>
 	<div id="order">
@@ -19,18 +19,18 @@
 		</select>
 		<br />
 		<label>Select a rice: </label>
-		<input type="radio" id="rice" value="white" /><label>White Rice </label>
-		<input type="radio" id="rice" value="brown" /><label>Brown Rice </label>
+		<input type="radio" name="rice" id="whiteRice" value="white" checked="checked"/><label>White Rice </label>
+		<input type="radio" name="rice" id="brownRice" value="brown" /><label>Brown Rice </label>
 		<br />
 		<label>Which type of beans:</label>
-		<input type="radio" id="beans" value="pinto" /><label>Pinto Beans </label>
-		<input type="radio" id="beans" value="black" /><label>Black Beans </label>
+		<input type="radio" name="beans" id="pintoBeans" value="pinto" checked="checked"/><label>Pinto Beans </label>
+		<input type="radio" name="beans" id="blackBeans" value="black" /><label>Black Beans </label>
 		<br />
 		<label>Choose Salsa(s): </label>
-		<input type="checkbox" id="salsas" value="pico" /><label>Pico De Gallo </label>
-		<input type="checkbox" id="salsas" value="corn" /><label>Roasted Corn </label>
-		<input type="checkbox" id="salsas" value="green" /><label>Tomatillo - Green </label>
-		<input type="checkbox" id="salsas" value="red" /><label>Tomatillo - Red </label>
+		<input type="checkbox" name="salsa" id="picoSalsa" value="pico" /><label>Pico De Gallo </label>
+		<input type="checkbox" name="salsa" id="cornSalsa" value="corn" /><label>Roasted Corn </label>
+		<input type="checkbox" name="salsa" id="greenSalsa" value="green" /><label>Tomatillo - Green </label>
+		<input type="checkbox" name="salsa" id="redSalsa" value="red" /><label>Tomatillo - Red </label>
 		<br />
 		<label>Add Guacamole - $1.40 </label><input type="checkbox" id="guac" value="guac" />
 		<br />
