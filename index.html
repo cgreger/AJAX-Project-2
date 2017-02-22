@@ -6,7 +6,40 @@
 	<<script src="burrito-order.js" charset="utf-8"></script>
 </head>
 <body>
-
+	<div id="order">
+		<h2>Customize Your Order</h2>
+		<label>Choose your burrito: </label>
+		<select id="burritoType">
+			<!--TODO: prices should be variables -->
+			<option value="chicken">Chicken - $6.20</option>
+			<option value="steack">Steak - $6.75</option>
+			<option value="carnitas">Carnitas - $6.60</option>
+			<option value="barbacoa">Barbacoa - $6.60</option>
+			<option value="vegitarian">Vegitarian - $6.20</option>
+		</select>
+		<br />
+		<label>Select a rice: </label>
+		<input type="radio" id="rice" value="white" /><label>White Rice </label>
+		<input type="radio" id="rice" value="brown" /><label>Brown Rice </label>
+		<br />
+		<label>Which type of beans:</label>
+		<input type="radio" id="beans" value="pinto" /><label>Pinto Beans </label>
+		<input type="radio" id="beans" value="black" /><label>Black Beans </label>
+		<br />
+		<label>Choose Salsa(s): </label>
+		<input type="checkbox" id="salsas" value="pico" /><label>Pico De Gallo </label>
+		<input type="checkbox" id="salsas" value="corn" /><label>Roasted Corn </label>
+		<input type="checkbox" id="salsas" value="green" /><label>Tomatillo - Green </label>
+		<input type="checkbox" id="salsas" value="red" /><label>Tomatillo - Red </label>
+		<br />
+		<label>Add Guacamole - $1.40 </label><input type="checkbox" id="guac" value="guac" />
+		<br />
+		<button id="btnAddBurrito">Add Burrito to Order</button>
+	</div>
+	<div id="receipt">
+		<h2>Receipt</h2>
+		<hr>
+	</div>
 </body>
 </html>
 <script type="text/javascript">
