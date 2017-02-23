@@ -11,11 +11,11 @@
 		<label>Choose your burrito: </label>
 		<select id="burritoType">
 			<!--TODO: prices should be variables -->
-			<option value="chicken">Chicken - $6.20</option>
-			<option value="steack">Steak - $6.75</option>
-			<option value="carnitas">Carnitas - $6.60</option>
-			<option value="barbacoa">Barbacoa - $6.60</option>
-			<option value="vegitarian">Vegitarian - $6.20</option>
+			<option id="chicken" value="chicken">Chicken - $</option>
+			<option id="steak" value="steak">Steak - $</option>
+			<option id="carnitas" value="carnitas">Carnitas - $</option>
+			<option id="barbacoa" value="barbacoa">Barbacoa - $</option>
+			<option id="vegitarian" value="vegitarian">Vegitarian - $</option>
 		</select>
 		<br />
 		<label>Select a rice: </label>
@@ -32,7 +32,7 @@
 		<input type="checkbox" name="salsa" id="greenSalsa" value="green" /><label>Tomatillo - Green </label>
 		<input type="checkbox" name="salsa" id="redSalsa" value="red" /><label>Tomatillo - Red </label>
 		<br />
-		<label>Add Guacamole - $1.40 </label><input type="checkbox" id="guac" value="guac" />
+		<label id="guacLabel">Add Guacamole - $</label><input type="checkbox" id="guac" value="guac" />
 		<br />
 		<button id="btnAddBurrito">Add Burrito to Order</button>
 	</div>

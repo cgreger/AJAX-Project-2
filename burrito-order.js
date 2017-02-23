@@ -1,25 +1,42 @@
-var receipt = new Receipt();
+
+var orderForm;
+var receipt;
+var menu;
 
 function init() {
+	
+	orderForm = new OrderForm();
+	receipt = new Receipt();
+	menu = new Menu();
 
-	var btnAddBurrito = document.getElementById("btnAddBurrito");
+	orderForm.setFormPrices();
 
-	btnAddBurrito.onclick = function() {
+	orderForm.btnAddBurrito.onclick = function() {
+		
+		receipt.addBurrito();
 
-		var type = document.getElementById("burritoType").value;
-		var rice = getRiceType();
-		var beans = getBeanType();
-		var salsas = getSalsaChoices();
-		var guac = document.getElementById("guac").checked;
+	}
 
-		var burrito = new Burrito();
+}
 
-		burrito.type = type;
-		burrito.rice = rice;
-		burrito.beans = beans;
-		burrito.salsas = salsas;
-		burrito.guac = guac;
-		burrito.calculateCost();
+function OrderForm() {
+
+	this.btnAddBurrito = document.getElementById("btnAddBurrito");
+	this.type = document.getElementById("burritoType").value;
+	this.rice = getRiceType();
+	this.beans = getBeanType();
+	this.salsas = getSalsaChoices();
+	this.guac = document.getElementById("guac").checked;
+
+	this.setFormPrices = function() {
+
+		document.getElementById("chicken").appendChild(document.createTextNode(menu.chickenPrice.toFixed(2)));
+		document.getElementById("steak").appendChild(document.createTextNode(menu.steakPrice.toFixed(2)));
+		document.getElementById("carnitas").appendChild(document.createTextNode(menu.carnitasPrice.toFixed(2)));
+		document.getElementById("barbacoa").appendChild(document.createTextNode(menu.barbacoaPrice.toFixed(2)));
+		document.getElementById("vegitarian").appendChild(document.createTextNode(menu.vegitarianPrice.toFixed(2)));
+		document.getElementById("guacLabel").appendChild(document.createTextNode(menu.guacPrice.toFixed(2) + " "));
+
 
 	}
 
@@ -94,8 +111,6 @@ function Burrito() {
 
 	this.calculateCost = function() {
 
-		var menu = new Menu();
-
 		if (this.type === "chicken") {
 
 			this.cost += menu.chickenPrice;
@@ -126,7 +141,7 @@ function Burrito() {
 
 	}
 
-	this.getDetails = function() {
+	this.displayBurrito = function() {
 
 
 
@@ -138,19 +153,20 @@ function Receipt() {
 
 	this.burritos = [];
 
-	this.addBurrito = function(burrito) {
+	this.addBurrito = function() {
 
+		var burrito = new Burrito();
 
+		burrito.type = orderForm.type;
+		burrito.rice = orderForm.rice;
+		burrito.beans = orderForm.beans;
+		burrito.salsas = orderForm.salsas;
+		burrito.guac = orderForm.guac;
+		burrito.calculateCost();
 
 	}
 
 	this.removeBurrito = function(burrito) {
-
-
-	}
-
-	this.printReciept = function() {
-
 
 
 	}
