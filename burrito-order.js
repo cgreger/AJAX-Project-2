@@ -12,7 +12,7 @@ function init() {
 	orderForm.setFormPrices();
 
 	orderForm.btnAddBurrito.onclick = function() {
-		
+
 		receipt.addBurrito();
 
 	}
@@ -22,11 +22,6 @@ function init() {
 function OrderForm() {
 
 	this.btnAddBurrito = document.getElementById("btnAddBurrito");
-	this.type = document.getElementById("burritoType").value;
-	this.rice = getRiceType();
-	this.beans = getBeanType();
-	this.salsas = getSalsaChoices();
-	this.guac = document.getElementById("guac").checked;
 
 	this.setFormPrices = function() {
 
@@ -40,7 +35,7 @@ function OrderForm() {
 
 	}
 
-	function getSalsaChoices() {
+	this.getSalsaChoices = function() {
 
 		var salsaChoices = document.getElementsByName("salsa");
 		var selected = [];
@@ -59,7 +54,7 @@ function OrderForm() {
 
 	}
 
-	function getBeanType() {
+	this.getBeanType = function() {
 
 		if (document.getElementById("pintoBeans").checked) {
 
@@ -73,7 +68,7 @@ function OrderForm() {
 
 	}
 
-	function getRiceType() {
+	this.getRiceType = function() {
 
 		if (document.getElementById("whiteRice").checked) {
 
@@ -107,6 +102,7 @@ function Burrito() {
 	this.beans;
 	this.salsas = [];
 	this.guac;
+	this.basicCost = 0;
 	this.cost = 0;
 
 	this.calculateCost = function() {
@@ -114,22 +110,27 @@ function Burrito() {
 		if (this.type === "chicken") {
 
 			this.cost += menu.chickenPrice;
+			this.basicCost = menu.chickenPrice
 
 		} else if (this.type === "steak") {
 
 			this.cost += menu.steakPrice;
+			this.basicCost = menu.steakPrice;
 
 		} else if (this.type === "carnitas") {
 
 			this.cost += menu.carnitasPrice;
+			this.basicCost = menu.carnitasPrice;
 
 		} else if (this.type === "barbacoa") {
 
 			this.cost += menu.barbacoaPrice;
+			this.basicCost = menu.barbacoaPrice;
 
 		} else if (this.type === "vegitarian") {
 
 			this.cost += menu.vegitarianPrice;
+			this.basicCost = menu.vegitarianPrice;
 
 		}
 
@@ -143,7 +144,80 @@ function Burrito() {
 
 	this.displayBurrito = function() {
 
+		//Set up divs & formatting elements
+		var receiptDiv = document.getElementById("receipt");
+		var burritoDiv = document.createElement("div");
+		var typeFormat = document.createElement("b");
 
+
+		//Initial label as the burrito type
+		var typeText = document.createTextNode(this.type.toUpperCase() + " BURRITO + $");
+		var basicCostText = document.createTextNode(this.basicCost.toFixed(2));
+		typeFormat.appendChild(typeText);
+		burritoDiv.appendChild(typeFormat);
+		burritoDiv.appendChild(basicCostText);
+		burritoDiv.appendChild(document.createElement("br"));
+
+		//Burrito details
+		var riceText = document.createTextNode("---- " + this.rice + " rice");
+		burritoDiv.appendChild(riceText);
+		burritoDiv.appendChild(document.createElement("br"));
+
+		var beansText = document.createTextNode("---- " + this.beans + " beans");
+		burritoDiv.appendChild(beansText);
+		burritoDiv.appendChild(document.createElement("br"));
+
+		var salsaText = document.createTextNode("---- no salsa");
+
+		if (this.salsas.length > 0) {
+
+			for (var i = 0; i < this.salsas.length; i++) {
+
+				salsaText = document.createTextNode("---- " + this.salsas[i].value + " salsa ");
+				burritoDiv.appendChild(salsaText);
+				burritoDiv.appendChild(document.createElement("br"));
+
+			}
+
+		} else {
+
+			burritoDiv.appendChild(salsaText);
+			burritoDiv.appendChild(document.createElement("br"));
+
+		}
+
+		var guacString;
+		if (this.guac) {
+
+			guacString = "add guac + $" + menu.guacPrice.toFixed(2);
+
+		} else { 
+
+			guacString = "no guac";
+
+		}
+
+		var guacText = document.createTextNode("---- " + guacString);
+		burritoDiv.appendChild(guacText);
+		burritoDiv.appendChild(document.createElement("br"));
+
+		//Display total and delete button
+		var totalFormat = document.createElement("b");
+		var totalText = document.createTextNode("TOTAL: $");
+		var totalCostText = document.createTextNode(this.cost.toFixed(2));
+		var btnDelete = document.createElement("button");
+		var removeText = document.createTextNode("Remove");
+		btnDelete.appendChild(removeText);
+
+
+		totalFormat.appendChild(totalText);
+		burritoDiv.appendChild(totalFormat);
+		burritoDiv.appendChild(totalCostText);
+		burritoDiv.appendChild(totalText);
+		burritoDiv.appendChild(btnDelete);
+
+		//Add all text to reciept div
+		receiptDiv.appendChild(burritoDiv);
 
 	}
 
@@ -157,12 +231,16 @@ function Receipt() {
 
 		var burrito = new Burrito();
 
-		burrito.type = orderForm.type;
-		burrito.rice = orderForm.rice;
-		burrito.beans = orderForm.beans;
-		burrito.salsas = orderForm.salsas;
-		burrito.guac = orderForm.guac;
+		burrito.type = document.getElementById("burritoType").value;
+		burrito.rice = orderForm.getRiceType();
+		burrito.beans = orderForm.getBeanType();
+		burrito.salsas = orderForm.getSalsaChoices();
+		burrito.guac = document.getElementById("guac").checked;
+
+		this.burritos.push(burrito);
+
 		burrito.calculateCost();
+		burrito.displayBurrito();
 
 	}
 
