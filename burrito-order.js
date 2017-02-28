@@ -19,6 +19,17 @@ function init() {
 
 }
 
+function Menu() {
+
+	this.chickenPrice = 6.20;
+	this.steakPrice = 6.75;
+	this.carnitasPrice = 6.60;
+	this.barbacoaPrice = 6.60;
+	this.vegitarianPrice = 6.20;
+	this.guacPrice = 1.40;
+
+}
+
 function OrderForm() {
 
 	this.btnAddBurrito = document.getElementById("btnAddBurrito");
@@ -84,89 +95,87 @@ function OrderForm() {
 
 }
 
-function Menu() {
-
-	this.chickenPrice = 6.20;
-	this.steakPrice = 6.75;
-	this.carnitasPrice = 6.60;
-	this.barbacoaPrice = 6.60;
-	this.vegitarianPrice = 6.20;
-	this.guacPrice = 1.40;
-
-}
-
 function Burrito() {
-
+	
+	this.id;
 	this.type;
 	this.rice;
 	this.beans;
 	this.salsas = [];
 	this.guac;
 	this.basicCost = 0;
-	this.cost = 0;
+	this.totalCost = 0;
+	this.burritoDiv = document.createElement("div");
 
-	this.calculateCost = function() {
+	this.calculateTotalCost = function() {
 
 		if (this.type === "chicken") {
 
-			this.cost += menu.chickenPrice;
+			this.totalCost += menu.chickenPrice;
 			this.basicCost = menu.chickenPrice
 
 		} else if (this.type === "steak") {
 
-			this.cost += menu.steakPrice;
+			this.totalCost += menu.steakPrice;
 			this.basicCost = menu.steakPrice;
 
 		} else if (this.type === "carnitas") {
 
-			this.cost += menu.carnitasPrice;
+			this.totalCost += menu.carnitasPrice;
 			this.basicCost = menu.carnitasPrice;
 
 		} else if (this.type === "barbacoa") {
 
-			this.cost += menu.barbacoaPrice;
+			this.totalCost += menu.barbacoaPrice;
 			this.basicCost = menu.barbacoaPrice;
 
 		} else if (this.type === "vegitarian") {
 
-			this.cost += menu.vegitarianPrice;
+			this.totalCost += menu.vegitarianPrice;
 			this.basicCost = menu.vegitarianPrice;
 
 		}
 
 		if (this.guac) {
 
-			this.cost += menu.guacPrice;
+			this.totalCost += menu.guacPrice;
 
 		}
 
 	}
 
-	this.displayBurrito = function() {
-
-		//Set up divs & formatting elements
-		var receiptDiv = document.getElementById("receipt");
-		var burritoDiv = document.createElement("div");
-		var typeFormat = document.createElement("b");
-
-
+	this.formatBurritoTitle = function() {
+		
 		//Initial label as the burrito type
+		var typeFormat = document.createElement("b");
 		var typeText = document.createTextNode(this.type.toUpperCase() + " BURRITO + $");
 		var basicCostText = document.createTextNode(this.basicCost.toFixed(2));
 		typeFormat.appendChild(typeText);
-		burritoDiv.appendChild(typeFormat);
-		burritoDiv.appendChild(basicCostText);
-		burritoDiv.appendChild(document.createElement("br"));
-
+		this.burritoDiv.appendChild(typeFormat);
+		this.burritoDiv.appendChild(basicCostText);
+		this.burritoDiv.appendChild(document.createElement("br"));
+		
+	}
+	
+	this.formatBurritoDetails = function() {
+		
 		//Burrito details
 		var riceText = document.createTextNode("---- " + this.rice + " rice");
-		burritoDiv.appendChild(riceText);
-		burritoDiv.appendChild(document.createElement("br"));
+		this.burritoDiv.appendChild(riceText);
+		this.burritoDiv.appendChild(document.createElement("br"));
 
 		var beansText = document.createTextNode("---- " + this.beans + " beans");
-		burritoDiv.appendChild(beansText);
-		burritoDiv.appendChild(document.createElement("br"));
-
+		this.burritoDiv.appendChild(beansText);
+		this.burritoDiv.appendChild(document.createElement("br"));
+		
+		this.formatSalsa();
+		this.formatGuac();
+		this.formatTotal();
+		
+	}
+	
+	this.formatSalsa = function() {
+		
 		var salsaText = document.createTextNode("---- no salsa");
 
 		if (this.salsas.length > 0) {
@@ -174,18 +183,22 @@ function Burrito() {
 			for (var i = 0; i < this.salsas.length; i++) {
 
 				salsaText = document.createTextNode("---- " + this.salsas[i].value + " salsa ");
-				burritoDiv.appendChild(salsaText);
-				burritoDiv.appendChild(document.createElement("br"));
+				this.burritoDiv.appendChild(salsaText);
+				this.burritoDiv.appendChild(document.createElement("br"));
 
 			}
 
 		} else {
 
-			burritoDiv.appendChild(salsaText);
-			burritoDiv.appendChild(document.createElement("br"));
+			this.burritoDiv.appendChild(salsaText);
+			this.burritoDiv.appendChild(document.createElement("br"));
 
 		}
-
+		
+	}
+	
+	this.formatGuac = function() {
+		
 		var guacString;
 		if (this.guac) {
 
@@ -198,27 +211,21 @@ function Burrito() {
 		}
 
 		var guacText = document.createTextNode("---- " + guacString);
-		burritoDiv.appendChild(guacText);
-		burritoDiv.appendChild(document.createElement("br"));
-
-		//Display total and delete button
+		this.burritoDiv.appendChild(guacText);
+		this.burritoDiv.appendChild(document.createElement("br"));
+		
+	}
+	
+	this.formatTotal = function() {
+		
 		var totalFormat = document.createElement("b");
 		var totalText = document.createTextNode("TOTAL: $");
-		var totalCostText = document.createTextNode(this.cost.toFixed(2));
-		var btnDelete = document.createElement("button");
-		var removeText = document.createTextNode("Remove");
-		btnDelete.appendChild(removeText);
-
-
-		totalFormat.appendChild(totalText);
-		burritoDiv.appendChild(totalFormat);
-		burritoDiv.appendChild(totalCostText);
-		burritoDiv.appendChild(totalText);
-		burritoDiv.appendChild(btnDelete);
-
-		//Add all text to reciept div
-		receiptDiv.appendChild(burritoDiv);
-
+		var totalCostText = document.createTextNode(this.totalCost.toFixed(2));
+		
+		totalFormat.appendChild(totalText); //<b>TOTAL: $</b>
+		this.burritoDiv.appendChild(totalFormat); //<div>...<b>TOTAL: $</b><div>
+		this.burritoDiv.appendChild(totalCostText);//<div>...<b>TOTAL: $</b>7.99<div>
+		
 	}
 
 }
@@ -226,11 +233,15 @@ function Burrito() {
 function Receipt() {
 
 	this.burritos = [];
-
+	this.receiptDiv = document.getElementById("receipt");
+	this.totalDiv = document.getElementById("orderTotal");
+	this.total = 0;
+	
 	this.addBurrito = function() {
 
 		var burrito = new Burrito();
-
+		
+		burrito.id = Date.now() + (Math.random() * 1000);
 		burrito.type = document.getElementById("burritoType").value;
 		burrito.rice = orderForm.getRiceType();
 		burrito.beans = orderForm.getBeanType();
@@ -239,14 +250,88 @@ function Receipt() {
 
 		this.burritos.push(burrito);
 
-		burrito.calculateCost();
-		burrito.displayBurrito();
+		burrito.calculateTotalCost();
+		this.total += burrito.totalCost;
+		this.updateReceiptTotal();
+		
+		this.buildBurritoReceipt(burrito);
 
 	}
 
 	this.removeBurrito = function(burrito) {
-
-
+		
+		alert(this.burritos.length);
+	
+		var burritoId = burrito.id;
+		
+		for (var i = 0; i < this.burritos.length; i++) {
+			
+			if (this.burritos[i].id === burrito.id) {
+				
+				this.total -= this.burritos[i].totalCost;
+				this.burritos.splice(i, 1);
+				break;
+				
+			}
+			
+		}
+		
+		var divToRemove = burrito.burritoDiv;
+		
+		divToRemove.parentNode.removeChild(divToRemove);
+		
+		alert(this.burritos.length);
+		
+	}
+	
+	this.buildBurritoReceipt = function(burrito) {
+		
+		burrito.formatBurritoTitle();
+		burrito.formatBurritoDetails();
+		this.addRemoveButton(burrito);
+		this.receiptDiv.appendChild(burrito.burritoDiv);
+		
+	}
+	
+	//TODO: fix this!
+	this.updateReceiptTotal = function() {
+		
+		var orderTotalText = document.getElementById("orderTotalText");
+		var receiptTotalText = document.createTextNode(this.total);
+			
+		if (orderTotalText != null) {
+			
+			var newTotal = document.createTextNode(this.total);
+			this.orderTotalText.parentNode.replaceChild(newTotal, receiptTotalText);
+			
+		} else {
+			
+			var receiptTotalFormat = document.createElement("b");
+			var receiptTotalLabel = document.createTextNode("ORDER TOTAL: $");
+			
+			receiptTotalFormat.setAttribute("id", "orderTotalText");
+			receiptTotalFormat.appendChild(receiptTotalLabel);
+			receiptTotalFormat.appendChild(receiptTotalText);
+			this.totalDiv.appendChild(receiptTotalFormat);
+			
+		}
+		
+	}
+	
+	this.addRemoveButton = function(burrito) {
+		
+		var btnRemoveBurrito = document.createElement("button");
+		var btnText = document.createTextNode("Remove");
+		
+		btnRemoveBurrito.appendChild(btnText);
+		burrito.burritoDiv.appendChild(btnRemoveBurrito);
+		
+		btnRemoveBurrito.onclick = function() {
+			
+			receipt.removeBurrito(burrito);
+			
+		}
+		
 	}
 
 }
