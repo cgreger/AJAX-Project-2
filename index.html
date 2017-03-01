@@ -4,13 +4,13 @@
 	<meta charset=utf-8>
 	<title>Burrito Order</title>
 	<script src="burrito-order.js" charset="utf-8"></script>
+	<link rel="stylesheet" href="burrito-order.css" />
 </head>
 <body>
 	<div id="order">
 		<h2>Customize Your Order</h2>
 		<label>Choose your burrito: </label>
 		<select id="burritoType">
-			<!--TODO: prices should be variables -->
 			<option id="chicken" value="chicken">Chicken - $</option>
 			<option id="steak" value="steak">Steak - $</option>
 			<option id="carnitas" value="carnitas">Carnitas - $</option>
@@ -19,18 +19,18 @@
 		</select>
 		<br />
 		<label>Select a rice: </label>
-		<input type="radio" name="rice" id="whiteRice" value="white" checked="checked"/><label>White Rice </label>
-		<input type="radio" name="rice" id="brownRice" value="brown" /><label>Brown Rice </label>
+		<input type="radio" name="rice" id="whiteRice" value="white" checked="checked"/>White Rice
+		<input type="radio" name="rice" id="brownRice" value="brown" />Brown Rice
 		<br />
 		<label>Which type of beans:</label>
-		<input type="radio" name="beans" id="pintoBeans" value="pinto" checked="checked"/><label>Pinto Beans </label>
-		<input type="radio" name="beans" id="blackBeans" value="black" /><label>Black Beans </label>
+		<input type="radio" name="beans" id="pintoBeans" value="pinto" checked="checked"/>Pinto Beans
+		<input type="radio" name="beans" id="blackBeans" value="black" />Black Beans
 		<br />
 		<label>Choose Salsa(s): </label>
-		<input type="checkbox" name="salsa" id="picoSalsa" value="pico" /><label>Pico De Gallo </label>
-		<input type="checkbox" name="salsa" id="cornSalsa" value="corn" /><label>Roasted Corn </label>
-		<input type="checkbox" name="salsa" id="greenSalsa" value="green" /><label>Tomatillo - Green </label>
-		<input type="checkbox" name="salsa" id="redSalsa" value="red" /><label>Tomatillo - Red </label>
+		<input type="checkbox" name="salsa" id="picoSalsa" value="pico" />Pico De Gallo
+		<input type="checkbox" name="salsa" id="cornSalsa" value="corn" />Roasted Corn 
+		<input type="checkbox" name="salsa" id="greenSalsa" value="green" />Tomatillo - Green
+		<input type="checkbox" name="salsa" id="redSalsa" value="red" />Tomatillo - Red
 		<br />
 		<label id="guacLabel">Add Guacamole - $</label><input type="checkbox" id="guac" value="guac" />
 		<br />

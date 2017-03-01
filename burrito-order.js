@@ -5,13 +5,18 @@ var menu;
 
 function init() {
 	
+	//Create needed objects
 	orderForm = new OrderForm();
 	receipt = new Receipt();
 	menu = new Menu();
 	
+	//Set the prices in the form
 	orderForm.setFormPrices();
+	
+	//Set the initial receipt total
 	receipt.addReceiptTotal();
 	
+	//Add burrito event listener
 	orderForm.btnAddBurrito.onclick = function() {
 
 		receipt.addBurrito();
@@ -20,6 +25,7 @@ function init() {
 
 }
 
+// Menu object holds menu prices
 function Menu() {
 
 	this.chickenPrice = 6.20;
@@ -31,10 +37,12 @@ function Menu() {
 
 }
 
+// OrderForm gathers form data
 function OrderForm() {
 
 	this.btnAddBurrito = document.getElementById("btnAddBurrito");
-
+	
+	// set the form prices using the menu prices
 	this.setFormPrices = function() {
 
 		document.getElementById("chicken").appendChild(document.createTextNode(menu.chickenPrice.toFixed(2)));
@@ -46,7 +54,8 @@ function OrderForm() {
 
 
 	}
-
+	
+	// Creates an array of the chosen salsas
 	this.getSalsaChoices = function() {
 
 		var salsaChoices = document.getElementsByName("salsa");
@@ -65,7 +74,8 @@ function OrderForm() {
 		return selected;
 
 	}
-
+	
+	// Gets the type of bean
 	this.getBeanType = function() {
 
 		if (document.getElementById("pintoBeans").checked) {
@@ -80,6 +90,7 @@ function OrderForm() {
 
 	}
 
+	// Gets the rice type
 	this.getRiceType = function() {
 
 		if (document.getElementById("whiteRice").checked) {
@@ -96,6 +107,7 @@ function OrderForm() {
 
 }
 
+// Keeps track of a specific burrito
 function Burrito() {
 	
 	this.id;
@@ -107,7 +119,9 @@ function Burrito() {
 	this.basicCost = 0;
 	this.totalCost = 0;
 	this.burritoDiv = document.createElement("div");
-
+	this.burritoDiv.setAttribute("id", "burrito");
+	
+	// Calculate the cost of this burrito
 	this.calculateTotalCost = function() {
 
 		if (this.type === "chicken") {
@@ -144,7 +158,8 @@ function Burrito() {
 		}
 
 	}
-
+	
+	// format the burrito's title
 	this.formatBurritoTitle = function() {
 		
 		//Initial label as the burrito type
@@ -158,6 +173,7 @@ function Burrito() {
 		
 	}
 	
+	// format the burrito's details
 	this.formatBurritoDetails = function() {
 		
 		//Burrito details
@@ -175,6 +191,7 @@ function Burrito() {
 		
 	}
 	
+	// format the burrito's salsa details
 	this.formatSalsa = function() {
 		
 		var salsaText = document.createTextNode("---- no salsa");
@@ -198,6 +215,7 @@ function Burrito() {
 		
 	}
 	
+	// format the burrito's guac details
 	this.formatGuac = function() {
 		
 		var guacString;
@@ -216,7 +234,8 @@ function Burrito() {
 		this.burritoDiv.appendChild(document.createElement("br"));
 		
 	}
-	
+
+	// format the burrito's total
 	this.formatTotal = function() {
 		
 		var totalFormat = document.createElement("b");
@@ -231,6 +250,7 @@ function Burrito() {
 
 }
 
+// Keeps track of the current receipt
 function Receipt() {
 
 	this.burritos = [];
@@ -238,52 +258,65 @@ function Receipt() {
 	this.totalDiv = document.getElementById("orderTotal");
 	this.total = 0;
 	
+	// Add a burrito to the receipt
 	this.addBurrito = function() {
 
 		var burrito = new Burrito();
 		
-		burrito.id = Date.now() + (Math.random() * 1000);
+		// set burrito details
+		burrito.id = Date.now() + (Math.random() * 1000); //Randomly generated id
 		burrito.type = document.getElementById("burritoType").value;
 		burrito.rice = orderForm.getRiceType();
 		burrito.beans = orderForm.getBeanType();
 		burrito.salsas = orderForm.getSalsaChoices();
 		burrito.guac = document.getElementById("guac").checked;
-
+		
+		// add the burrito to the receipt
 		this.burritos.push(burrito);
-
+		
+		// calculate the cost of the burrito and the new order total
 		burrito.calculateTotalCost();
 		this.total += burrito.totalCost;
+		
+		// update the orderTotal element
 		this.updateReceiptTotal();
 		
+		// rebuild the receipt
 		this.buildBurritoReceipt(burrito);
 
 	}
-
+	
+	// remove a specific burrito from the receipt
 	this.removeBurrito = function(burrito) {
 		
+		// get the burrito's id
 		var burritoId = burrito.id;
 		
+		// search for the burrito and delete it
 		for (var i = 0; i < this.burritos.length; i++) {
 			
 			if (this.burritos[i].id === burrito.id) {
 				
-				this.total -= this.burritos[i].totalCost;
+				this.total -= this.burritos[i].totalCost; //subtract the burrito cost from the current order total
 				this.burritos.splice(i, 1);
-				break;
+				break; // exit the loop as soon as the burrito to delete has been deleted
 				
 			}
 			
 		}
 		
+		// remove the burrito div
 		var divToRemove = burrito.burritoDiv;
-		
 		divToRemove.parentNode.removeChild(divToRemove);
+		
+		// update the order total
 		this.updateReceiptTotal();
 		
 		
 		
 	}
 	
+    // Create the elements necessary for the burrito to be displayed then add it to the reciept
 	this.buildBurritoReceipt = function(burrito) {
 		
 		burrito.formatBurritoTitle();
@@ -293,22 +326,18 @@ function Receipt() {
 		
 	}
 	
-	this.updateReceiptTotal = function() {
-		
-		var orderTotalDiv = document.getElementById("orderTotal");
-		
-		orderTotalDiv.lastChild.nodeValue = this.total.toFixed(2);
-		
-	}
-	
+	// Add the remove button to the burrito div
 	this.addRemoveButton = function(burrito) {
 		
 		var btnRemoveBurrito = document.createElement("button");
 		var btnText = document.createTextNode("Remove");
 		
+		btnRemoveBurrito.setAttribute("id", "removeBtn");
+		
 		btnRemoveBurrito.appendChild(btnText);
 		burrito.burritoDiv.appendChild(btnRemoveBurrito);
 		
+		// remove burrito event listener
 		btnRemoveBurrito.onclick = function() {
 			
 			receipt.removeBurrito(burrito);
@@ -316,13 +345,23 @@ function Receipt() {
 		}
 		
 	}
-	
+
+	// Add the initial receipt total to the receipt
 	this.addReceiptTotal = function() {
 		
 		var orderTotalDiv = document.getElementById("orderTotal");
 		
 		orderTotalDiv.appendChild(document.createTextNode(this.total.toFixed(2)));
 		
+		
+	}
+	
+	// Update the currently displayed order total
+	this.updateReceiptTotal = function() {
+		
+		var orderTotalDiv = document.getElementById("orderTotal");
+		
+		orderTotalDiv.lastChild.nodeValue = Math.abs(this.total).toFixed(2);
 		
 	}
 

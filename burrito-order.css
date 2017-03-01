@@ -1,0 +1,18 @@
+label { 
+    float: left; 
+    width: 10em; 
+    margin-right: 1em; 
+    text-align: right; 
+}
+
+#burrito {
+    
+    padding: .5em;
+    
+}
+
+button {
+    
+    margin-left: 1em;
+    
+}
