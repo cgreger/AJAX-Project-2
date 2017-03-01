@@ -8,9 +8,10 @@ function init() {
 	orderForm = new OrderForm();
 	receipt = new Receipt();
 	menu = new Menu();
-
+	
 	orderForm.setFormPrices();
-
+	receipt.addReceiptTotal();
+	
 	orderForm.btnAddBurrito.onclick = function() {
 
 		receipt.addBurrito();
@@ -260,8 +261,6 @@ function Receipt() {
 
 	this.removeBurrito = function(burrito) {
 		
-		alert(this.burritos.length);
-	
 		var burritoId = burrito.id;
 		
 		for (var i = 0; i < this.burritos.length; i++) {
@@ -279,8 +278,9 @@ function Receipt() {
 		var divToRemove = burrito.burritoDiv;
 		
 		divToRemove.parentNode.removeChild(divToRemove);
+		this.updateReceiptTotal();
 		
-		alert(this.burritos.length);
+		
 		
 	}
 	
@@ -293,28 +293,11 @@ function Receipt() {
 		
 	}
 	
-	//TODO: fix this!
 	this.updateReceiptTotal = function() {
 		
-		var orderTotalText = document.getElementById("orderTotalText");
-		var receiptTotalText = document.createTextNode(this.total);
-			
-		if (orderTotalText != null) {
-			
-			var newTotal = document.createTextNode(this.total);
-			this.orderTotalText.parentNode.replaceChild(newTotal, receiptTotalText);
-			
-		} else {
-			
-			var receiptTotalFormat = document.createElement("b");
-			var receiptTotalLabel = document.createTextNode("ORDER TOTAL: $");
-			
-			receiptTotalFormat.setAttribute("id", "orderTotalText");
-			receiptTotalFormat.appendChild(receiptTotalLabel);
-			receiptTotalFormat.appendChild(receiptTotalText);
-			this.totalDiv.appendChild(receiptTotalFormat);
-			
-		}
+		var orderTotalDiv = document.getElementById("orderTotal");
+		
+		orderTotalDiv.lastChild.nodeValue = this.total.toFixed(2);
 		
 	}
 	
@@ -331,6 +314,15 @@ function Receipt() {
 			receipt.removeBurrito(burrito);
 			
 		}
+		
+	}
+	
+	this.addReceiptTotal = function() {
+		
+		var orderTotalDiv = document.getElementById("orderTotal");
+		
+		orderTotalDiv.appendChild(document.createTextNode(this.total.toFixed(2)));
+		
 		
 	}
 
